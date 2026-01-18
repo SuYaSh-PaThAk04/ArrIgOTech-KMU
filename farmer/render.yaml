@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: gofarm-app
+    env: node
+    plan: free
+    buildCommand: |
+      npm install
+      cd client
+      npm install
+      npm run build
+      cd ..
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        fromDatabase:
+          name: gofarm-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 10000
+
+databases:
+  - name: gofarm-db
+    databaseName: gofarm
+    user: gofarm_user
