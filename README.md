@@ -214,9 +214,3 @@ By combining Agentic AI, IoT, and Blockchain, we’re giving every farmer the po
 
 
 ---
-
-Would you like me to add:
-- 📊 A **“System Architecture Diagram”** section (with placeholders for your diagram)?
-- 🖼️ “Screenshots / Demo Preview” section (with captions for dashboard, chatbot, and 3D view)?
-
-That will make it **100% GitHub + hackathon submission ready**.
