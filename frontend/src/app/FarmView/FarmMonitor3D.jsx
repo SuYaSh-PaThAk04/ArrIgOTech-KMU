@@ -656,6 +656,7 @@ export default function FarmMonitor3D({ onBack }) {
             </p>
           </div>
 
+
           <div className="flex items-center gap-2 bg-gray-800/60 rounded-xl p-1.5 border border-emerald-500/20">
             <button
               onClick={() => setViewMode("farm")}

@@ -45,6 +45,7 @@ export default function FarmViewLanding({ on3DViewClick, onDroneViewClick }) {
                 <Sprout className="w-12 h-12 text-emerald-400" />
               </div>
 
+
               {/* Title */}
               <h2 className="text-3xl font-bold text-white mb-4">
                 3D Farm View
