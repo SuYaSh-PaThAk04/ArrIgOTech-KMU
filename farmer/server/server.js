@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
+dotenv.config();   
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
@@ -67,7 +68,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/image', express.static(path.join(__dirname, '../image')));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/agrisense', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })

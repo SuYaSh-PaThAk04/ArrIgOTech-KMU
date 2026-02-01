@@ -24,7 +24,7 @@ exports.protect = async (req, res, next) => {
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET ||`happy2026dcnjdcnfsknfskn_cfs`);
       console.log('🔐 Auth middleware - Token decoded:', { id: decoded.id, role: decoded.role });
       
       req.user = await User.findById(decoded.id);
