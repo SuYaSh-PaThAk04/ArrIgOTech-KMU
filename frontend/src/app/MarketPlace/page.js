@@ -233,7 +233,7 @@ const handleBuyerSubmit = async (e) => {
           maxPrice: 4000,
           trend: "stable",
           changePercent: 0.5,
-          market: "Majra,Dehradun",
+          market: "Ghaziabad",
           lastUpdated: "Today",
           advice: "Stable prices - moderate selling",
           demand: "Moderate",
@@ -246,7 +246,7 @@ const handleBuyerSubmit = async (e) => {
           maxPrice: 2200,
           trend: "up",
           changePercent: 5.2,
-          market: "Majra,Dehradun",
+          market: "Ghaziabad, Uttar Pradesh",
           lastUpdated: "Today",
           advice: "Strong demand - excellent selling time",
           demand: "Very High",
@@ -254,7 +254,7 @@ const handleBuyerSubmit = async (e) => {
       ];
 
       setMarketPrices({
-        market: "Majra,Dehradun",
+        market: "Ghaziabad, Uttar Pradesh",
         date: new Date().toLocaleDateString("en-IN"),
         commodities: demoMarketData,
       });

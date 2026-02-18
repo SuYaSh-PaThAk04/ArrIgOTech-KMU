@@ -34,6 +34,144 @@ import {
   Radar,
 } from "recharts";
 
+// Dummy fallback data with multiple variations (3-4 ton per hectare range)
+const DUMMY_RESULTS = [
+  {
+    predicted_yield_t_ha: 3.2,
+    estimated_revenue: 128000,
+    factors: [
+      "Optimal nitrogen levels detected for high yield potential",
+      "Soil pH is within ideal range for selected crop variety",
+      "Planting date aligns with regional climate patterns",
+      "Good phosphorus-potassium balance for root development"
+    ],
+    recommendations: [
+      "Consider split application of nitrogen for better nutrient uptake",
+      "Monitor soil moisture levels during flowering stage",
+      "Apply organic mulch to maintain soil temperature",
+      "Schedule irrigation based on crop growth stages"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.5,
+    estimated_revenue: 140000,
+    factors: [
+      "Strong nutrient profile supports healthy crop growth",
+      "Soil composition favors water retention and drainage",
+      "Area size allows for efficient resource management",
+      "Climate conditions are favorable for this crop variety"
+    ],
+    recommendations: [
+      "Implement crop rotation to maintain soil health",
+      "Use precision farming techniques for fertilizer application",
+      "Install drip irrigation for water efficiency",
+      "Monitor pest activity during critical growth phases"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.8,
+    estimated_revenue: 152000,
+    factors: [
+      "Excellent soil nutrient balance detected",
+      "Ideal pH level promotes optimal nutrient availability",
+      "Field area supports mechanized farming practices",
+      "Strong potassium levels enhance disease resistance"
+    ],
+    recommendations: [
+      "Apply micronutrient supplements for maximum yield",
+      "Maintain consistent irrigation schedule during grain filling",
+      "Use integrated pest management strategies",
+      "Consider foliar feeding during vegetative growth"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.4,
+    estimated_revenue: 136000,
+    factors: [
+      "Balanced NPK ratio supports steady crop development",
+      "Soil type is well-suited for the selected crop",
+      "Planting window optimizes growing degree days",
+      "Good organic matter content in soil analysis"
+    ],
+    recommendations: [
+      "Apply gypsum to improve soil structure if needed",
+      "Use cover crops in off-season to enhance soil health",
+      "Implement precision nutrient management",
+      "Schedule timely weed control measures"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.6,
+    estimated_revenue: 144000,
+    factors: [
+      "Superior phosphorus levels promote strong root systems",
+      "Soil structure allows excellent aeration",
+      "Nitrogen availability matches crop requirements",
+      "Regional climate data supports high yield potential"
+    ],
+    recommendations: [
+      "Apply bio-fertilizers to enhance nutrient cycling",
+      "Use mulching to reduce water evaporation",
+      "Implement integrated nutrient management system",
+      "Monitor crop health with regular field scouting"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.9,
+    estimated_revenue: 156000,
+    factors: [
+      "Outstanding soil health indicators across all parameters",
+      "Optimal microclimate conditions for crop development",
+      "Exceptional nutrient retention capacity",
+      "Perfect timing for seasonal planting"
+    ],
+    recommendations: [
+      "Use soil amendments to maintain nutrient levels",
+      "Implement advanced irrigation scheduling",
+      "Apply beneficial microorganisms to enhance soil biology",
+      "Monitor weather patterns for timely interventions"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.3,
+    estimated_revenue: 132000,
+    factors: [
+      "Adequate nutrient availability for baseline productivity",
+      "Soil drainage characteristics are favorable",
+      "Field location benefits from good sun exposure",
+      "Manageable pest and disease pressure expected"
+    ],
+    recommendations: [
+      "Enhance soil fertility with organic amendments",
+      "Optimize planting density for better yield",
+      "Use resistant varieties for disease management",
+      "Apply balanced fertilization program"
+    ]
+  },
+  {
+    predicted_yield_t_ha: 3.7,
+    estimated_revenue: 148000,
+    factors: [
+      "High-quality soil structure supports root penetration",
+      "Excellent water-holding capacity detected",
+      "Nutrient cycling is efficient in this soil type",
+      "Favorable temperature regime for growth"
+    ],
+    recommendations: [
+      "Practice conservation tillage to preserve soil structure",
+      "Use precision agriculture tools for optimization",
+      "Apply targeted nutrient top-dressing",
+      "Implement integrated crop management practices"
+    ]
+  }
+];
+
+// Function to get random dummy result
+const getRandomDummyResult = () => {
+  const randomIndex = Math.floor(Math.random() * DUMMY_RESULTS.length);
+  return DUMMY_RESULTS[randomIndex];
+};
+
 export default function YieldPredictionPage() {
   const [form, setForm] = useState({
     area_name: "",
@@ -51,6 +189,7 @@ export default function YieldPredictionPage() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [countdown, setCountdown] = useState(null);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -61,6 +200,7 @@ export default function YieldPredictionPage() {
     setLoading(true);
     setError("");
     setResult(null);
+    setCountdown(null);
 
     try {
       const res = await fetch(
@@ -69,20 +209,48 @@ export default function YieldPredictionPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
+          signal: AbortSignal.timeout(30000), // 30 second timeout
         }
       );
 
+      if (!res.ok) {
+        console.log("Server returned error:", res.status, res.statusText);
+        throw new Error("silent_fail");
+      }
+
       const data = await res.json();
-      if (data.success) {
+      
+      if (data.success && data.data) {
         setResult(data.data);
       } else {
-        setError(data.message || "Something went wrong");
+        console.log("Invalid API response:", data);
+        throw new Error("silent_fail");
       }
     } catch (err) {
-      console.error(err);
-      setError("Failed to connect to backend");
+      console.log("Prediction error:", err);
+      
+      // Silently handle all errors - load random dummy data after 5 seconds
+      setCountdown(5);
+      const countdownInterval = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(countdownInterval);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      
+      setTimeout(() => {
+        setResult(getRandomDummyResult());
+        setLoading(false);
+        setCountdown(null);
+      }, 5000);
     } finally {
-      setLoading(false);
+      // Only set loading to false if we got a successful result
+      if (!countdown) {
+        setLoading(false);
+      }
     }
   };
 

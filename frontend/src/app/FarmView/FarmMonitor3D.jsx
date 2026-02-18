@@ -109,7 +109,7 @@ export default function FarmMonitor3D({ onBack }) {
 
   useEffect(() => {
     fetchSensorData();
-    const interval = setInterval(fetchSensorData, 60000);
+    const interval = setInterval(fetchSensorData, 6000);
     return () => clearInterval(interval);
   }, []);
 
