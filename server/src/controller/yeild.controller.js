@@ -69,7 +69,7 @@ Respond strictly in **valid JSON** format only:
 
     // 🔮 Get Gemini model
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash", // you can also use gemini-1.5-flash
+      model: "gemini-1.5-flash", // you can also use gemini-1.5-flash
     });
 
     // 🚀 Generate AI response

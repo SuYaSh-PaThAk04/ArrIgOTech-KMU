@@ -25,13 +25,13 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/", icon: Home },
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { name: "Yield", href: "/Yeild", icon: AreaChart },
+    { name: "Detection", href: "/Detection", icon: AreaChart },
     { name: "Soil Analytics", href: "/Soil", icon: BarChart },
     { name: "Farm View", href: "/FarmView", icon: Eye },
-    { name: "Irrigation", href: "/Irrigation", icon: Droplet },
-    { name: "Disease Detection", href: "/Disease-Detect", icon: Zap },
+    { name: "Irrigation", href: "/Irrigation", icon: Droplet }, 
     { name: "Wallet", href: "/Wallet", icon: Wallet },
     { name: "Market Prices", href: "/MarketPlace", icon: ShoppingCart },
+    {name : "Gov Schemes", href : "/GovScheme", icon : Zap}
   ];
 
   const isActive = (href) => {

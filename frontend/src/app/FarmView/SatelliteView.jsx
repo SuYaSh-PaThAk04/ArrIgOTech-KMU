@@ -2,20 +2,14 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-/* ══════════════════════════════════════════════════════════
-   CONFIG  — swap these values for your real credentials
-══════════════════════════════════════════════════════════ */
 const CONFIG = {
   FARM_LAT:  29.89304,
   FARM_LNG:  77.96205,
   FARM_NAME: "Uttarakhand Plot α-1",
   FARM_AREA: "0.98 ha",
 
-  // ① Paste your OpenWeatherMap free API key here
   OWM_API_KEY: "YOUR_OPENWEATHER_API_KEY",
 
-  // ② After running the GEE script, paste your map ID + token here
-  // Paste urlFormat from GEE console — v1 API, no token needed
   GEE_TILE_URL: "YOUR_GEE_TILE_URL",
 
   // Polling intervals (ms)
@@ -24,9 +18,6 @@ const CONFIG = {
   WS_TICK_MS:      3000,             // mock WebSocket heartbeat
 };
 
-/* ══════════════════════════════════════════════════════════
-   NDVI helpers
-══════════════════════════════════════════════════════════ */
 function getNDVIHealth(val) {
   if (val >= 0.7) return { label: "Excellent", color: "#22c55e", rec: "Crop is thriving. Maintain current irrigation schedule." };
   if (val >= 0.5) return { label: "Moderate",  color: "#eab308", rec: "Moderate vegetation density. Monitor irrigation — consider a top-up within 3 days." };
